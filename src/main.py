@@ -5,7 +5,7 @@ import sys
 import cv2
 import editdistance
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 from DataLoader import Batch, DataLoader, FilePaths
 from SamplePreprocessor import preprocessor, wer
@@ -39,15 +39,15 @@ def train(model, loader):
 
         # Validate
         charErrorRate, addressAccuracy, wordErrorRate = validate(model, loader)
-        cer_summary = tf.Summary(value=[tf.Summary.Value(
+        cer_summary = tf.compat.v1.Summary(value=[tf.compat.v1.Summary.Value(
             tag='charErrorRate', simple_value=charErrorRate)])  # Tensorboard: Track charErrorRate
         # Tensorboard: Add cer_summary to writer
         model.writer.add_summary(cer_summary, epoch)
-        address_summary = tf.Summary(value=[tf.Summary.Value(
+        address_summary = tf.compat.v1.Summary(value=[tf.compat.v1.Summary.Value(
             tag='addressAccuracy', simple_value=addressAccuracy)])  # Tensorboard: Track addressAccuracy
         # Tensorboard: Add address_summary to writer
         model.writer.add_summary(address_summary, epoch)
-        wer_summary = tf.Summary(value=[tf.Summary.Value(
+        wer_summary = tf.compat.v1.Summary(value=[tf.compat.v1.Summary.Value(
             tag='wordErrorRate', simple_value=wordErrorRate)])  # Tensorboard: Track wordErrorRate
         # Tensorboard: Add wer_summary to writer
         model.writer.add_summary(wer_summary, epoch)
@@ -145,6 +145,7 @@ def main():
     """ Main function """
     # Opptional command line args
     parser = argparse.ArgumentParser()
+    print(parser)
     parser.add_argument(
         "--train", help="train the neural network", action="store_true")
     parser.add_argument(
